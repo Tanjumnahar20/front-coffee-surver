@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import { useLoaderData } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const UpdateCoffee = () => {
     const coffee = useLoaderData();
@@ -17,8 +18,26 @@ const UpdateCoffee = () => {
         const category = form.category.value;
         const photo = form.photo.value;
 
-        const newCoffee ={name,supplier,quantity,details,taste,category,photo};
-        console.log(newCoffee)
+        const updateCoffee ={name,supplier,quantity,details,taste,category,photo};
+        console.log(updateCoffee);
+
+        fetch(`http://localhost:5000/coffee/${_id}`,{
+        method: 'PUT',
+        headers:{
+            'content-type': 'application/json'
+        },
+        body:JSON.stringify(updateCoffee)
+       })
+       .then(res=>res.json())
+       .then(data=>{console.log(data)
+        if(data.modifiedCount>0){
+            Swal.fire({
+                title: "success!",
+                text: "updated successfully!",
+                icon: "success",
+              });
+        }
+    })
     }
 
 
